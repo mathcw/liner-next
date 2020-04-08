@@ -32,7 +32,7 @@ const reducer = (state = initialGlobalState,action) => {
 //ACTIONS
 export function updateEnum(){
     return async (dispatch) =>{
-        const r = await fetch(`${host}liner-back/files/TY_LINER/cache/Enum.js`);
+        const r = await fetch(`${host}files/TY_LINER/cache/Enum.js`);
         const rst = await r.json();    
         dispatch({type:SET_ENUM,enum:rst});
     }

@@ -228,7 +228,7 @@ function Home(props) {
 }
 
 Home.getInitialProps = async function (ctx) {
-  const res = await axios.get(`${host}liner-back/api/WebApi/home`);
+  const res = await axios.get(`${host}api/WebApi/home`);
   if (res.status === 200 && res.data['data']) {
     return {
       companys: res.data['data']['邮轮公司'],

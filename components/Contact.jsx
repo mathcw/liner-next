@@ -20,7 +20,7 @@ const Contact = () => {
         setvisible(true);
     }
     const handleOk = Debounce(() => {
-        axios.post(`${host}liner-back/api/WebApi/comment`, {
+        axios.post(`${host}api/WebApi/comment`, {
             name, phone, weChat, mail, comment
         }).then(r => {
             setvisible(false);
