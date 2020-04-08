@@ -1,7 +1,7 @@
 const withCss = require('@zeit/next-css');
 const isProd = process.env.NODE_ENV === 'production'
 const assetPrefix = isProd?'http://b2b.tongyeju.com/next':'';
-const basePath = isProd?'/next':'';
+const basePath = isProd?'':'';
 
 if (typeof require !== undefined){
     require.extensions['.css'] = file => {
