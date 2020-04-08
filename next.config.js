@@ -15,7 +15,6 @@ module.exports = withCss({
     },
     assetPrefix:assetPrefix,
     publicRuntimeConfig: {
-        basePath,
-        staticFolder:basePath
+        basePath
     },
 })
