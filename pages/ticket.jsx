@@ -229,7 +229,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
             <PageLoading loading={loading} />
             {/* 顶部图片 */}
             <div className="route_top">
-                <div className='route_back'></div>
+                <img className="route_back" src={getStaticFile("/route_back.png")} />
                 <div className="route_vague"></div>
                 <div className="text">
                     <span className="all">全部航线</span>
