@@ -6,7 +6,7 @@ const { publicRuntimeConfig } = getConfig()
 const Link = ({ children, ...props }) => (
   <NextLink
     {...props}
-    as={`${publicRuntimeConfig.basePath || ''}${format(props.as?props.as:props.href)}`}
+    as={`${format(props.as?props.as:props.href)}`}
   >
     {children}
   </NextLink>
