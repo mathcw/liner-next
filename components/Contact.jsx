@@ -3,9 +3,7 @@ import { Modal, Button, Input, notification } from 'antd';
 import axios from 'axios';
 import { UserOutlined, WechatOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import Debounce from 'lodash.debounce';
-import {host,getStaticFile} from '../lib/util';
-
-
+import {host} from '../lib/util';
 
 const Contact = () => {
     const [visible, setvisible] = useState(false);
@@ -46,7 +44,7 @@ const Contact = () => {
     return (
         <div className='main' >
             <div className="content" onClick={Click}>
-                <img className="img" src={getStaticFile('/pic.png')} />
+                <img className="img" src="/pic.png" />
                 <div className="people">
                     <span>与我们联系</span>
                 </div>
