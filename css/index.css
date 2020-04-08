@@ -484,11 +484,10 @@ body{
 }
 .side .side_left{
     position: relative;
-    width: 30%;
 }
 .side .side_left img{
     height: 188px;
-    width: 100%;
+    width: 200px;
 }
 .side .side_left .cp{
     position: absolute;
@@ -544,6 +543,7 @@ body{
     font-weight:400;
     color:rgba(0,0,0,0.25);
     line-height:20px;
+    width: 88px;
 }
 .side .side_right .detail .two .con{
     font-size:14px;
@@ -551,7 +551,10 @@ body{
     font-weight:400;
     color:rgba(0,0,0,0.65);
     line-height:20px;
-    margin-left: 15px;
+    margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .side .side_right .star{
     font-size:12px;
@@ -784,6 +787,7 @@ body{
 }
 .travel_detail .teavel_content .right .feature .pro_detail{
     display: flex;
+    flex-direction: column;
 }
 .travel_detail .teavel_content .right .feature .pro_detail .among{
     display: flex;
@@ -909,17 +913,3 @@ body{
     height: 40px;
     padding-left: 15px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

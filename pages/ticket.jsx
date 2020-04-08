@@ -5,8 +5,9 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import locale from '../lib/local';
 import PageLoading from '../components/Loading';
+import Link from '../components/NextLink'
 import '../css/index.css'
-import {host,getStaticFile} from '../lib/util';
+import { host, getStaticFile } from '../lib/util';
 import { useState, useMemo, useEffect } from 'react';
 import moment from "moment";
 
@@ -75,13 +76,13 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
     const [desCity, setDesCity] = useState(initCond['desCity'] ? [...initCond['desCity']] : []);
     const [companys, setCompany] = useState([]);
 
-    const [orderBy,setOrderBy] = useState('create_at');
-    const [orderDir,setOrderDir] = useState('desc');
+    const [orderBy, setOrderBy] = useState('create_at');
+    const [orderDir, setOrderDir] = useState('desc');
 
     const dictDepCity = dict['depCity'] ? dict['depCity'] : {};
     const dictDesCity = dict['desCity'] ? dict['desCity'] : {};
     const dictCompany = dict['CruiseCompany'] ? dict['CruiseCompany'] : {};
-    const dictCruiseShip = dict['CruiseShip'] ? dict['CruiseShip']: {};
+    const dictCruiseShip = dict['CruiseShip'] ? dict['CruiseShip'] : {};
 
     const [loading, setLoading] = useState(false);
 
@@ -96,8 +97,8 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
             name: keyWord,
             dep_date_to: depDateTo,
             dep_date_from: depDateFrom,
-            order_field:orderBy,
-            order_dir:orderDir
+            order_field: orderBy,
+            order_dir: orderDir
         }, page, pageSize).then(r => {
             setTotal(r.total);
             setData(r.data);
@@ -119,8 +120,8 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
             name: keyWord,
             dep_date_to: depDateTo,
             dep_date_from: depDateFrom,
-            order_field:orderBy,
-            order_dir:orderDir
+            order_field: orderBy,
+            order_dir: orderDir
         }, 1, pageSize).then(r => {
             setTotal(r.total);
             setData(r.data);
@@ -141,8 +142,8 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
             name: keyWord,
             dep_date_to: depDateTo,
             dep_date_from: depDateFrom,
-            order_field:orderBy,
-            order_dir:orderDir
+            order_field: orderBy,
+            order_dir: orderDir
         }, 1, pageSize).then(r => {
             setTotal(r.total);
             setData(r.data);
@@ -150,7 +151,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         }, e => {
             setLoading(false);
         });
-    }, [pdKind, depCity, desCity,companys,orderBy,orderDir])
+    }, [pdKind, depCity, desCity, companys, orderBy, orderDir])
 
 
 
@@ -210,16 +211,16 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         setCompany([...companys]);
     }
 
-    const clickOrderBY = (field)=>{
-        if(field!=orderBy){
+    const clickOrderBY = (field) => {
+        if (field != orderBy) {
             setOrderBy(field);
         }
     }
 
-    const clickOrderDir = ()=>{
-        if(orderDir === 'asc'){
+    const clickOrderDir = () => {
+        if (orderDir === 'asc') {
             setOrderDir('desc');
-        }else{
+        } else {
             setOrderDir('asc');
         }
     }
@@ -300,7 +301,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                 Object.keys(dictDesCity).length > 8 && <div className="more" onClick={() => { setdesMore(!desMore) }}>
                                     更多
                                 {!desMore && <DownOutlined />}
-                                {desMore && <UpOutlined />}
+                                    {desMore && <UpOutlined />}
                                 </div>
                             }
 
@@ -407,59 +408,61 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                 style={{ border: '0', width: '70%' }}
                             >
                                 <Menu.Item key="create_at" >
-                                    <span onClick={()=>{clickOrderBY('create_at')}}>新品</span>
-                                    {orderBy === 'create_at' && orderDir==='desc' && <DownOutlined onClick={()=>{clickOrderDir()}} />}
-                                    {orderBy === 'create_at' && orderDir==='asc' && <UpOutlined onClick={()=>{clickOrderDir()}} />}
+                                    <span onClick={() => { clickOrderBY('create_at') }}>新品</span>
+                                    {orderBy === 'create_at' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
+                                    {orderBy === 'create_at' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
                                 <Menu.Item key="order_nums" >
-                                    <span onClick={()=>{clickOrderBY('order_nums')}}>销量</span>
-                                    {orderBy === 'order_nums' && orderDir==='desc' && <DownOutlined onClick={()=>{clickOrderDir()}} />}
-                                    {orderBy === 'order_nums' && orderDir==='asc' && <UpOutlined onClick={()=>{clickOrderDir()}} />}
+                                    <span onClick={() => { clickOrderBY('order_nums') }}>销量</span>
+                                    {orderBy === 'order_nums' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
+                                    {orderBy === 'order_nums' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
                                 <Menu.Item key="min_duoren_price">
-                                    <span onClick={()=>{clickOrderBY('min_duoren_price')}}>价钱</span>
-                                    {orderBy === 'min_duoren_price' && orderDir==='desc' && <DownOutlined onClick={()=>{clickOrderDir()}} />}
-                                    {orderBy === 'min_duoren_price' && orderDir==='asc' && <UpOutlined onClick={()=>{clickOrderDir()}} />}
+                                    <span onClick={() => { clickOrderBY('min_duoren_price') }}>价钱</span>
+                                    {orderBy === 'min_duoren_price' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
+                                    {orderBy === 'min_duoren_price' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
                             </Menu>
                         </div>
                         {
                             data.map(item => {
                                 return (
-                                    <div className="row" style={{ marginTop: '-30px' }} key={item['id']}>
-                                        <div className="content" style={{ padding: '0' }}>
-                                            <div className="side">
-                                                <div className="side_left">
-                                                    <img src={getStaticFile('/pic.png')} />
-                                                    <div className="cp">
-                                                        <span className="time">{`${item['day']}天${item['night']}晚`}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="side_right">
-                                                    <div className="paly_theme">
-                                                        {`${item['name']} 航线编号 ${item['pd_num']}`}
-                                                    </div>
-                                                    <div className="detail">
-                                                        <div className="two">
-                                                            <div style={{ display: 'flex', height: '25px' }}><span className="name">出发地</span><span className="con">{dictDepCity[item['dep_city_id']]}</span></div>
-                                                            <div style={{ display: 'flex' }}><span className="name">出发日期</span><span className="con">{item['dep_date']}</span></div>
-                                                        </div>
-                                                        <div className="two">
-                                                            <div style={{ display: 'flex', height: '25px' }}><span className="name">目的地</span><span className="con">{item['destination']}</span></div>
-                                                            <div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>
+                                    <Link href={`/details?id=${item['id']}`} key={item['id']}>
+                                        <div className="row" style={{ marginTop: '-30px' }}>
+                                            <div className="content" style={{ padding: '0' }}>
+                                                <div className="side">
+                                                    <div className="side_left">
+                                                        <img src={getStaticFile('/pic.png')} />
+                                                        <div className="cp">
+                                                            <span className="time">{`${item['day']}天${item['night']}晚`}</span>
                                                         </div>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
-                                                        <div style={{ display: 'flex' }}>
-                                                            <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
-                                                            <span className="star">{item['level']}星</span>
+                                                    <div className="side_right">
+                                                        <div className="paly_theme">
+                                                            {`${item['name']} 航线编号 ${item['pd_num']}`}
                                                         </div>
-                                                        <span className="buck">￥{item['min_duoren_price']}</span>
+                                                        <div className="detail">
+                                                            <div className="two">
+                                                                <div style={{ display: 'flex', height: '25px' }}><span className="name">出发地</span><span className="con">{dictDepCity[item['dep_city_id']]}</span></div>
+                                                                <div style={{ display: 'flex' }}><span className="name">出发日期</span><span className="con">{item['dep_date']}</span></div>
+                                                            </div>
+                                                            <div className="two">
+                                                                <div style={{ display: 'flex', height: '25px' }}><span className="name">目的地</span><span className="con">{item['destination']}</span></div>
+                                                                <div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
+                                                            <div style={{ display: 'flex' }}>
+                                                                <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
+                                                                <span className="star">{item['level']}星</span>
+                                                            </div>
+                                                            <span className="buck">￥{item['min_duoren_price']}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 )
                             })
                         }
@@ -490,8 +493,8 @@ Ticket.getInitialProps = async (appContext) => {
         depDateFrom: 'dep_date_from'
     }
     const search = {
-        order_field:'create_at',
-        order_dir:'desc'
+        order_field: 'create_at',
+        order_dir: 'desc'
     };
     if (query['dep'] && query['dep'] != '' && (typeof query['dep'] == 'number' || typeof query['dep'] == 'string')) {
         search['dep_city_id'] = [query[dep]];
