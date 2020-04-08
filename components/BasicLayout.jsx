@@ -40,7 +40,7 @@ export default (props) => {
             </Content>
             <div style={{ height: '80px', width: '100%', background: '#fff' }}></div>
             <div className="bottom_row">
-                <img src="/bottom_backgroud.png" />
+                <img src={getStaticFile("/bottom_backgroud.png")} />
                 <div className="con_text">
                     <div className="trademark">
                         <span className="bottom_titleone">TRADEMARK</span>

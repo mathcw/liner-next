@@ -39,7 +39,7 @@ function Home(props) {
     <div>
       <div style={{ position: 'relative' }}>
         <div className='top_back'>
-          <img src="/background.png" />
+          <img src={getStaticFile("/background.png")} />
         </div>
         <div className="top_vague"></div>
         <div className="container">
