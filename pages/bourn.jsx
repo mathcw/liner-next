@@ -6,7 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import '../css/index.css';
 import Link from '../components/NextLink';
 import PageLoading from '../components/Loading';
-import {host} from '../lib/util';
+import {host,getStaticFile} from '../lib/util';
 
 
 const pageSize = 6;
@@ -66,7 +66,7 @@ const Bourn = ({initData,initTotal}) =>{
             <PageLoading loading={loading} />
             {/* 顶部图片 */}
             <div className="Bourn-top">
-                <img className="Bourn-top-img" src="/route_back.png"/>
+                <img className="Bourn-top-img" src={getStaticFile("/route_back.png")} />
                 <div className="Bourn_vague"></div>
                 <div className="Bourn_search">
                     <span className="Bourn_search_label">想去哪儿</span>
@@ -135,7 +135,7 @@ const Bourn = ({initData,initTotal}) =>{
                                 <div className='Bourn-data' key={item['city_id']}>
                                     <Link href="">
                                         <a>
-                                            <img src={item['pic']=='' ?'/pic.png':item['pic']} className="Bourn-img"/>
+                                            <img src={item['pic']=='' ?getStaticFile('/pic.png'):item['pic']} className="Bourn-img"/>
                                             <div className="Bourn-vague"></div>
                                             <div className="Bourn-name">
                                                 <span>{item['name']}</span>

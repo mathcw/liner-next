@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Link from '../components/NextLink'
 import '../css/index.css'
-import {host} from '../lib/util';
-
+import { host,getStaticFile } from '../lib/util';
+import getConfig from 'next/config'
+const { publicRuntimeConfig } = getConfig()
 
 function Home(props) {
   const { dict, companys, citys, recommands } = props;
@@ -17,19 +18,19 @@ function Home(props) {
   const [destination, setDestination] = useState('');
   const [depDate, setDepDate] = useState('');
 
-  const search = () =>{
+  const search = () => {
     const query = {};
-    if(depCity && depCity != ''){
+    if (depCity && depCity != '') {
       query['dep'] = depCity
     }
-    if(destination && destination != ''){
+    if (destination && destination != '') {
       query['destination'] = destination
     }
-    if(depDate && depDate != ''){
+    if (depDate && depDate != '') {
       query['depDateFrom'] = depDate
     }
     Router.push({
-      pathname:'/ticket',
+      pathname: `${publicRuntimeConfig.basePath || ''}/ticket`,
       query
     })
   }
@@ -37,7 +38,9 @@ function Home(props) {
   return (
     <div>
       <div style={{ position: 'relative' }}>
-        <div className='top_back'></div>
+        <div className='top_back'>
+          <img src="/background.png" />
+        </div>
         <div className="top_vague"></div>
         <div className="container">
           <div className="top_title">与您一起游览大海</div>
@@ -76,7 +79,7 @@ function Home(props) {
               ))}
             </Select>
             <DatePicker className="data" placeholder="请输入日期"
-              locale={locale} onChange={(date,value) => {
+              locale={locale} onChange={(date, value) => {
                 setDepDate(value)
               }} />
             <div>
@@ -92,12 +95,12 @@ function Home(props) {
           <div style={{ display: 'flex', alignItems: 'center', marginLeft: '2%' }}>
             <Link href="/bourn"><a>
               <span className="more">更多</span>
-              <img className="img" src={'/more.png'} />
+              <img className="img" src={getStaticFile('/more.png')} />
             </a></Link>
           </div>
         </div>
         <div className="image">
-          <img src={'/bottom_row.png'} />
+          <img src={getStaticFile('/bottom_row.png')} />
         </div>
         <div className="content" style={{ marginTop: '15px' }}>
           {
@@ -106,7 +109,7 @@ function Home(props) {
                 <div className="chunk" key={city['id']}>
                   <Link href="">
                     <a>
-                      <img src={city['pic'] == '' ? '/pic.png' : city['pic']} />
+                      <img src={city['pic'] == '' ? getStaticFile('/pic.png') : city['pic']} />
                       <div className="vague"></div>
                       <div className="cp">
                         <span className="city">{city['name']}</span>
@@ -126,12 +129,12 @@ function Home(props) {
           <div style={{ display: 'flex', alignItems: 'center', marginLeft: '2%' }}>
             <Link href="/curise"><a>
               <span className="more">更多</span>
-              <img className="img" src={'/more.png'} />
+              <img className="img" src={getStaticFile('/more.png')} />
             </a></Link>
           </div>
         </div>
         <div className="image">
-          <img src={'/bottom_row.png'} />
+          <img src={getStaticFile('/bottom_row.png')} />
         </div>
         <div className="content">
           {
@@ -140,7 +143,7 @@ function Home(props) {
                 <div className="chunk" style={{ marginTop: '15px' }} key={company['id']}>
                   <Link href="">
                     <a>
-                      <img src={company['banner'] == '' ? '/pic.png' : company['banner']} />
+                      <img src={company['banner'] == '' ? getStaticFile('/pic.png') : company['banner']} />
                       <div className="vague"></div>
                       <div className="cp1">
                         <span className="city">{company['name']}</span>
@@ -161,12 +164,12 @@ function Home(props) {
           <div style={{ display: 'flex', alignItems: 'center', marginLeft: '2%' }}>
             <Link href="/ticket"><a>
               <span className="more">更多</span>
-              <img className="img" src={'/more.png'} />
+              <img className="img" src={getStaticFile('/more.png')} />
             </a></Link>
           </div>
         </div>
         <div className="image">
-          <img src={'/bottom_row.png'} />
+          <img src={getStaticFile('/bottom_row.png')} />
         </div>
         <div className="content">
           {
@@ -176,7 +179,7 @@ function Home(props) {
                   <Link href="">
                     <a>
                       <div className="top">
-                        <img src={recommand['pic'] == '' ? '/pic.png' : recommand['pic']} />
+                        <img src={recommand['pic'] == '' ? getStaticFile('/pic.png') : recommand['pic']} />
                         <div className="cp">
                           <span className="time">{`${recommand['day']}天${recommand['night']}夜`}</span>
                         </div>
@@ -207,7 +210,7 @@ function Home(props) {
           <span className="a">关于我们</span>
         </div>
         <div className="image">
-          <img src={'/bottom_row.png'} />
+          <img src={getStaticFile('/bottom_row.png')} />
         </div>
         <div className="text">
           诺唯真游轮（Norwegian Cruise Line）作为游轮行业最富创新力的品牌，

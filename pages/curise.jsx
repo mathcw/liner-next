@@ -5,7 +5,7 @@ import { Pagination } from 'antd';
 import '../css/index.css';
 import Link from '../components/NextLink';
 import PageLoading from '../components/Loading';
-import {host} from '../lib/util';
+import {host,getStaticFile} from '../lib/util';
 
 const pageSize = 6;
 async function load(current, pageSize) {
@@ -69,7 +69,7 @@ const Curise = ({initData,initTotal}) =>{
                                 <div className='Curise-data' key={item['id']}>
                                     <Link href="">
                                         <a>
-                                            <img src={item['banner']=='' ?'/pic.png':item['banner']} className="Curise-img"/>
+                                            <img src={item['banner']=='' ?getStaticFile('/pic.png'):item['banner']} className="Curise-img"/>
                                             <div className="Curise-vague"></div>
                                             <div className="Curise-name">
                                                 <span>{item['name']}</span>

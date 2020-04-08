@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import locale from '../lib/local';
 import PageLoading from '../components/Loading';
 import '../css/index.css'
-import {host} from '../lib/util';
+import {host,getStaticFile} from '../lib/util';
 import { useState, useMemo, useEffect } from 'react';
 import moment from "moment";
 
@@ -430,7 +430,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                         <div className="content" style={{ padding: '0' }}>
                                             <div className="side">
                                                 <div className="side_left">
-                                                    <img src={'/pic.png'} />
+                                                    <img src={getStaticFile('/pic.png')} />
                                                     <div className="cp">
                                                         <span className="time">{`${item['day']}天${item['night']}晚`}</span>
                                                     </div>
