@@ -1,5 +1,7 @@
 import {createStore,applyMiddleware} from 'redux';
 import ReduxThunk from 'redux-thunk';
+import {host} from '../lib/util';
+
 const initialGlobalState ={
     enum:{
         PdKind:{
@@ -30,7 +32,7 @@ const reducer = (state = initialGlobalState,action) => {
 //ACTIONS
 export function updateEnum(){
     return async (dispatch) =>{
-        const r = await fetch(`http://localhost:8080/liner-back/files/TY_LINER/cache/Enum.js`);
+        const r = await fetch(`${host}liner-back/files/TY_LINER/cache/Enum.js`);
         const rst = await r.json();    
         dispatch({type:SET_ENUM,enum:rst});
     }

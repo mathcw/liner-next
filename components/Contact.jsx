@@ -3,6 +3,7 @@ import { Modal, Button, Input, notification } from 'antd';
 import axios from 'axios';
 import { UserOutlined, WechatOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import Debounce from 'lodash.debounce';
+import {host} from '../lib/util';
 
 const Contact = () => {
     const [visible, setvisible] = useState(false);
@@ -19,7 +20,7 @@ const Contact = () => {
         setvisible(true);
     }
     const handleOk = Debounce(() => {
-        axios.post(`http://localhost:8080/liner-back/api/WebApi/comment`, {
+        axios.post(`${host}liner-back/api/WebApi/comment`, {
             name, phone, weChat, mail, comment
         }).then(r => {
             setvisible(false);

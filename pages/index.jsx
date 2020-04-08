@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Link from '../components/NextLink'
 import '../css/index.css'
+import {host} from '../lib/util';
+
 
 function Home(props) {
   const { dict, companys, citys, recommands } = props;
@@ -226,7 +228,7 @@ function Home(props) {
 }
 
 Home.getInitialProps = async function (ctx) {
-  const res = await axios.get('http://localhost:8080/liner-back/api/WebApi/home');
+  const res = await axios.get(`${host}liner-back/api/WebApi/home`);
   if (res.status === 200 && res.data['data']) {
     return {
       companys: res.data['data']['邮轮公司'],
