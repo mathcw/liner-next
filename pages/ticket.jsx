@@ -497,7 +497,7 @@ Ticket.getInitialProps = async (appContext) => {
         order_dir: 'desc'
     };
     if (query['dep'] && query['dep'] != '' && (typeof query['dep'] == 'number' || typeof query['dep'] == 'string')) {
-        search['dep_city_id'] = [query[dep]];
+        search['dep_city_id'] = [query['dep']];
     }
     if (query['destination'] && query['destination'] != '' && (typeof query['destination'] == 'number' || typeof query['destination'] == 'string')) {
         search['destination'] = [query['destination']];
