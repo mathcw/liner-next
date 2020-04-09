@@ -46,7 +46,7 @@ const Contact = () => {
     return (
         <div className='main' >
             <div className="content" onClick={Click}>
-                <img className="img" src={getStaticFile('/pic.png')} />
+                <img className="img" src={getStaticFile('/contact.png')} />
                 <div className="people">
                     <span>与我们联系</span>
                 </div>

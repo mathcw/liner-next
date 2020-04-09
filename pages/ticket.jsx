@@ -417,10 +417,10 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                     {orderBy === 'order_nums' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
                                     {orderBy === 'order_nums' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
-                                <Menu.Item key="min_duoren_price">
-                                    <span onClick={() => { clickOrderBY('min_duoren_price') }}>价钱</span>
-                                    {orderBy === 'min_duoren_price' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
-                                    {orderBy === 'min_duoren_price' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
+                                <Menu.Item key="min_price">
+                                    <span onClick={() => { clickOrderBY('min_price') }}>价钱</span>
+                                    {orderBy === 'min_price' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
+                                    {orderBy === 'min_price' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
                             </Menu>
                         </div>
@@ -432,7 +432,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                             <div className="content" style={{ padding: '0' }}>
                                                 <div className="side">
                                                     <div className="side_left">
-                                                        <img src={getStaticFile('/pic.png')} />
+                                                        <img src={item['pic'] ==''? getStaticFile('/pic.png'):item['pic']} />
                                                         <div className="cp">
                                                             <span className="time">{`${item['day']}天${item['night']}晚`}</span>
                                                         </div>
@@ -456,7 +456,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                                                 <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
                                                                 <span className="star">{item['level']}星</span>
                                                             </div>
-                                                            <span className="buck">￥{item['min_duoren_price']}</span>
+                                                            <span className="buck">￥{item['min_price']}</span>
                                                         </div>
                                                     </div>
                                                 </div>

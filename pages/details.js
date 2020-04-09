@@ -19,6 +19,8 @@ const Detail = ({ data, dict }) => {
         return fee;
     })
 
+    const related = data['其他航线'] ?data['其他航线']:[];
+
     const [visible, setvisible] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -35,7 +37,6 @@ const Detail = ({ data, dict }) => {
         setDuorenPrice(record['duoren_price']);
         setFeeId(record['id']);
         setvisible(true);
-        debugger;
     }
 
     const handleOk = Debounce(() => {
@@ -137,12 +138,12 @@ const Detail = ({ data, dict }) => {
                             </div>
                             <div className="part">
                                 <img src={getStaticFile('/price.png')} />
-                                <span className="star">￥{data['min_duoren_price']}起/人</span>
+                                <span className="star">￥{data['min_price']}起/人</span>
                             </div>
                         </div>
                         <div className="right">
                             <span className="m">￥</span>
-                            <span className="c">{data['min_duoren_price']}</span>
+                            <span className="c">{data['min_price']}</span>
                             <span className="c">起/人</span>
                         </div>
                     </div>
@@ -335,153 +336,37 @@ const Detail = ({ data, dict }) => {
                                     <img src={'/back.png'} style={{ width: '120px' }} />
                                 </div>
                             </div>
-                            <div className="content" style={{ padding: 0 }}>
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
-                                                    </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
-                                                    </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
-                                                    </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                            </div>
                             <div style={{ marginTop: '15px', padding: 0 }} className="content">
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
+                            {
+                                related.map((item)=>{
+                                    return (
+                                        <div className="chunk">
+                                            <Link href="">
+                                                <a>
+                                                    <div className="top">
+                                                        <img src={item['pic'] ==''? getStaticFile('/pic.png'):item['pic']} />
+                                                        <div className="cp">
+                                                            <span className="time">{item['day']}天{item['night']}夜</span>
+                                                        </div>
                                                     </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
+                                                    <div className="bottom">
+                                                        <div>
+                                                            <span className="adress">{item['name']}</span>
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
+                                                            <div style={{ display: 'flex' }}>
+                                                                <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)}  />
+                                                                <span className="star">{item['level']}星</span>
+                                                            </div>
+                                                            <span className="buck">￥{item['min_price']}</span>
+                                                        </div>
                                                     </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                                <div className="chunk">
-                                    <Link href="">
-                                        <a>
-                                            <div className="top">
-                                                <img src={'/pic.png'} />
-                                                <div className="cp">
-                                                    <span className="time">4天3夜</span>
-                                                </div>
-                                            </div>
-                                            <div className="bottom">
-                                                <div>
-                                                    <span className="adress">恋爱中的巴黎</span>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={2.5} />
-                                                        <span className="star">2.5星</span>
-                                                    </div>
-                                                    <span className="buck">￥2600</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
+                                                </a>
+                                            </Link>
+                                        </div>
+                                    )
+                                })
+                            }
                             </div>
                         </div>
                     </div>
