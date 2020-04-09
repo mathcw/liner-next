@@ -9,6 +9,10 @@ const initialGlobalState ={
             2:'邮轮套餐',
             3:'河轮套餐'
         },
+        ShipKind:{
+            1:'河轮',
+            2:'豪华邮轮'
+        },
     }
 };
 

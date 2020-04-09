@@ -1,13 +1,14 @@
 
 import axios from 'axios';
-import { useState, useMemo, useEffect } from 'react';
+import { useState } from 'react';
 import { Input,Button,Pagination } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import '../css/index.css';
-import Link from '../components/NextLink';
 import PageLoading from '../components/Loading';
 import {host,getStaticFile} from '../lib/util';
-
+import Router from 'next/router';
+import getConfig from 'next/config'
+const { publicRuntimeConfig } = getConfig();
 
 const pageSize = 6;
 async function load(search,current, pageSize) {
@@ -37,6 +38,15 @@ const Bourn = ({initData,initTotal}) =>{
 
     const [loading, setLoading] = useState(false);
     const [name,setName] = useState('');
+
+    const searchCity = (city_id) =>{
+        Router.push({
+            pathname: `${publicRuntimeConfig.basePath || ''}/ticket`,
+            query: {
+                destination:city_id
+            }
+          })
+    }
 
     const pageNumChange = page => {
         setCurrent(page);
@@ -133,7 +143,7 @@ const Bourn = ({initData,initTotal}) =>{
                         data.map(item => {
                             return (
                                 <div className='Bourn-data' key={item['city_id']}>
-                                    <Link href="">
+                                    <div onClick={()=>{searchCity(item['city_id'])}}>
                                         <a>
                                             <img src={item['pic']=='' ?getStaticFile('/pic.png'):item['pic']} className="Bourn-img"/>
                                             <div className="Bourn-vague"></div>
@@ -141,7 +151,7 @@ const Bourn = ({initData,initTotal}) =>{
                                                 <span>{item['name']}</span>
                                             </div>
                                         </a>
-                                    </Link>
+                                    </div>
                                 </div>
                             )
                         })

@@ -107,7 +107,6 @@ function Home(props) {
             citys.map(city => {
               return (
                 <div className="chunk" key={city['id']}>
-                  <Link href="">
                     <a>
                       <img src={city['pic'] == '' ? getStaticFile('/pic.png') : city['pic']} />
                       <div className="vague"></div>
@@ -115,7 +114,6 @@ function Home(props) {
                         <span className="city">{city['name']}</span>
                       </div>
                     </a>
-                  </Link>
                 </div>
               )
             })
@@ -141,7 +139,7 @@ function Home(props) {
             companys.map(company => {
               return (
                 <div className="chunk" style={{ marginTop: '15px' }} key={company['id']}>
-                  <Link href="">
+                  <Link href="/curise">
                     <a>
                       <img src={company['banner'] == '' ? getStaticFile('/pic.png') : company['banner']} />
                       <div className="vague"></div>
@@ -176,7 +174,7 @@ function Home(props) {
             recommands.map(recommand => {
               return (
                 <div className="chunk" style={{ marginTop: '15px' }} key={recommand['id']}>
-                  <Link href="">
+                  <Link href={`/details?id=${recommand['id']}`}>
                     <a>
                       <div className="top">
                         <img src={recommand['pic'] == '' ? getStaticFile('/pic.png') : recommand['pic']} />

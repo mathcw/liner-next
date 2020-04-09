@@ -19,6 +19,7 @@ export default (props) => {
                     <Menu.Item key="/" ><Link href="/"><a>首页</a></Link></Menu.Item>
                     <Menu.Item key="/ticket"><Link href="/ticket"><a>全部航线</a></Link></Menu.Item>
                     <Menu.Item key="/curise"><Link href="/curise"><a>邮轮公司</a></Link></Menu.Item>
+                    <Menu.Item key="/ship"><Link href="/ship"><a>邮轮展示</a></Link></Menu.Item>
                     <Menu.Item key="/bourn"><Link href="/bourn"><a>目的地</a></Link></Menu.Item>
                 </Menu>
                 <div style={{ height: '3rem', width: '30%', display: 'flex', alignItems: 'center', background: '#fff', lineHeight: '3rem' }}>

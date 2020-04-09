@@ -322,7 +322,7 @@ const Detail = ({ data, dict }) => {
                             </div>
                         </div>
                         <div className="table">
-                            <Table dataSource={fees} columns={columns} pagination={false} rowKey="id"/>
+                            <Table dataSource={fees} columns={columns} pagination={false} />
                         </div>
                     </div>
                     {/* 其他航线 */}
@@ -340,7 +340,7 @@ const Detail = ({ data, dict }) => {
                             {
                                 related.map((item)=>{
                                     return (
-                                        <div className="chunk" key={item['id']}>
+                                        <div className="chunk">
                                             <Link href={`/details?id=${item['id']}`}>
                                                 <a>
                                                     <div className="top">
