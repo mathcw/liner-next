@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/index.css';
-import { Rate, Table,Modal,Input,Button,notification } from 'antd';
+import {  Table,Modal,Input,Button,notification } from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import Link from '../components/NextLink';
 import { withRouter } from 'next/router';
@@ -8,6 +8,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { host, getStaticFile } from '../lib/util';
 import Debounce from 'lodash.debounce';
+import { get,cache } from '../lib/lruCache';
+
 
 const Detail = ({ data, dict }) => {
 
@@ -129,10 +131,6 @@ const Detail = ({ data, dict }) => {
                     <div className="bt_content">
                         <div className="left">
                             <div className="part" style={{ borderRight: '1px solid #fff', paddingRight: '20px' }}>
-                                <Rate style={{ color: '#fff', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(data['level'])} />
-                                <span className="star">{data['level']}星</span>
-                            </div>
-                            <div className="part" style={{ borderRight: '1px solid #fff', paddingRight: '20px' }}>
                                 <img src={getStaticFile('/time.png')} />
                                 <span className="star">{data['day']}天{data['night']}夜</span>
                             </div>
@@ -156,7 +154,8 @@ const Detail = ({ data, dict }) => {
             <div className="route_detail_content">
                 <div className="left_content">
                     {/* 产品信息 */}
-                    <div className="information" >
+                    {
+                        data['kind']!=4 && <div className="information" >
                         <div className="top">
                             <div className="title">
                                 <span className="a">{data['name']}</span>
@@ -169,6 +168,7 @@ const Detail = ({ data, dict }) => {
                             {data['ship_dep']}
                         </div>
                     </div>
+                    }
                     {/* 行程详情 */}
                     <div className="travel_detail" >
                         <div className="top">
@@ -315,7 +315,7 @@ const Detail = ({ data, dict }) => {
                     <div className="schedule_room" >
                         <div className="top">
                             <div className="title">
-                                <span className="a">班期房型</span>
+                                <span className="a">价格明细</span>
                             </div>
                             <div className="image">
                                 <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
@@ -330,7 +330,7 @@ const Detail = ({ data, dict }) => {
                         <div className="row">
                             <div className="top">
                                 <div className="title">
-                                    <span className="a">其他航线</span>
+                                    <span className="a">其他团期</span>
                                 </div>
                                 <div className="image">
                                     <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
@@ -354,10 +354,6 @@ const Detail = ({ data, dict }) => {
                                                             <span className="adress">{item['name']}</span>
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                            <div style={{ display: 'flex' }}>
-                                                                <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)}  />
-                                                                <span className="star">{item['level']}星</span>
-                                                            </div>
                                                             <span className="buck">￥{item['min_price']}</span>
                                                         </div>
                                                     </div>
@@ -419,10 +415,26 @@ Detail.getInitialProps = async (appContext) => {
         }
     }
     const res = await axios.get(`${host}api/WebApi/detail?id=${query['id']}`);
-    if (res.status == 200 && res.data && res.data['data']) {
-        return {
-            data: res.data['data']
+
+    if (res.status == 200 && res.data) {
+        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+            const cache = get(`${host}api/WebApi/detail?id=${query['id']}`);
+            if(!cache){
+                return {
+                    data: null
+                }
+            }
+            return cache;
         }
+        if(res.data['data']){
+            cache(`${host}api/WebApi/detail?id=${query['id']}`,{
+                data: res.data['data']
+            })
+            return {
+                data: res.data['data']
+            }
+        }
+
     }
     return {
         data: null

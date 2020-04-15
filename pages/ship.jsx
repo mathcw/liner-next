@@ -10,6 +10,7 @@ import '../css/index.css'
 import { host, getStaticFile } from '../lib/util';
 import { useState, useMemo, useEffect } from 'react';
 import moment from "moment";
+import { get,cache } from '../lib/lruCache';
 
 const { Search } = Input;
 const pageSize = 5;
@@ -21,10 +22,27 @@ async function load(search, current, pageSize) {
     const res = await axios.post(`${host}api/WebApi/ship`, {
         ...query
     });
-    if (res.status == 200 && res.data && res.data['data']) {
-        return {
-            data: res.data['data']['data'],
-            total: res.data['data']['total'],
+
+    if (res.status == 200 && res.data) {
+        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+            const cache = get(`${host}api/WebApi/ship`);
+            if(!cache){
+                return {
+                    data: [],
+                    total: 0,
+                }
+            }
+            return cache;
+        }
+        if(res.data['data']){
+            cache(`${host}api/WebApi/ship`,{
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            })
+            return {
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            }
         }
     }
     return {
@@ -113,12 +131,6 @@ const Ship = ({ dict, initData, initTotal, query }) => {
                                                         </div>
                                                         <div className="two">
                                                             <div style={{ display: 'flex', height: '25px' }}><span className="name">客房数</span><span className="con">{item['room_number']}</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
-                                                        <div style={{ display: 'flex' }}>
-                                                            <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
-                                                            <span className="star">{item['level']}星</span>
                                                         </div>
                                                     </div>
                                                 </div>

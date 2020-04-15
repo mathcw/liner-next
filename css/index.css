@@ -556,13 +556,15 @@ body{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.side .side_right .star{
-    font-size:12px;
-    font-weight:400;
-    color:rgba(0,0,0,0.45);
-    line-height:18px;   
-    margin-left: 5px;
-    margin-top: 8px;
+.side .side_right .theme{
+    font-size: 14px;
+    font-family: PingFang-SC-Regular,PingFang-SC;
+    font-weight: 400;
+    color: rgba(0,0,0,0.65);
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .side .side_right .buck{
     font-size:18px;

@@ -1,6 +1,6 @@
 import { withRouter } from 'next/router';
 import axios from 'axios';
-import { DatePicker, Input, Checkbox, Menu, Rate, Pagination } from 'antd';
+import { DatePicker, Input, Checkbox, Menu, Pagination } from 'antd';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import locale from '../lib/local';
@@ -8,6 +8,7 @@ import PageLoading from '../components/Loading';
 import Link from '../components/NextLink'
 import '../css/index.css'
 import { host, getStaticFile } from '../lib/util';
+import { get,cache } from '../lib/lruCache';
 import { useState, useMemo, useEffect } from 'react';
 import moment from "moment";
 
@@ -29,11 +30,28 @@ async function load(search, current, pageSize) {
     const res = await axios.post(`${host}api/WebApi/ticket`, {
         ...query
     });
-    if (res.status == 200 && res.data && res.data['data']) {
-        return {
-            data: res.data['data']['data'],
-            total: res.data['data']['total'],
+    if (res.status == 200 && res.data) {
+        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+            const cache = get(`${host}api/WebApi/ticket`);
+            if(!cache){
+                return {
+                    data: [],
+                    total: 0,
+                }
+            }
+            return cache;
         }
+        if(res.data['data']){
+            cache(`${host}api/WebApi/ticket`,{
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            })
+            return {
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            }
+        }
+
     }
     return {
         data: [],
@@ -79,6 +97,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
     const [orderBy, setOrderBy] = useState('create_at');
     const [orderDir, setOrderDir] = useState('desc');
 
+    const dictTheme = dict['PdTheme'] ? dict['PdTheme'] : {};
     const dictDepCity = dict['depCity'] ? dict['depCity'] : {};
     const dictDesCity = dict['desCity'] ? dict['desCity'] : {};
     const dictCompany = dict['CruiseCompany'] ? dict['CruiseCompany'] : {};
@@ -90,7 +109,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         setCurrent(page);
         setLoading(true);
         load({
-            kind: pdKind,
+            theme: pdKind,
             dep_city_id: depCity,
             destination: desCity,
             cruise_company_id: companys,
@@ -113,7 +132,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         setLoading(true);
         setCurrent(1);
         load({
-            kind: pdKind,
+            theme: pdKind,
             dep_city_id: depCity,
             destination: desCity,
             cruise_company_id: companys,
@@ -135,7 +154,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         setLoading(true);
         setCurrent(1);
         load({
-            kind: pdKind,
+            theme: pdKind,
             dep_city_id: depCity,
             destination: desCity,
             cruise_company_id: companys,
@@ -225,6 +244,16 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         }
     }
 
+    const renderTheme = (theme) =>{
+        if(theme == ''){
+            return ''
+        };
+        const theme_arr = theme.split(',').map(item=>{
+            return dictTheme[item];
+        })
+        return theme_arr.join(',');
+    }
+
     return (
         <>
             <PageLoading loading={loading} />
@@ -233,7 +262,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                 <img className="route_back" src={getStaticFile("/route_back.png")} />
                 <div className="route_vague"></div>
                 <div className="text">
-                    <span className="all">全部航线</span>
+                    <span className="all">全部产品</span>
                 </div>
             </div>
             {/* 下面内容部分 */}
@@ -270,13 +299,13 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                 <div className="route_right">
                     <div className="right_top">
                         <div className="cloumn" style={{ alignItems: 'center' }}>
-                            <span className="type">产品类型</span>
+                            <span className="type">产品分类</span>
                             <div className="checkbox">
                                 <span><Checkbox checked={pdKind.length === 0} onChange={clearPdKind}>不限</Checkbox></span>
                                 {
-                                    Object.keys(dict['PdKind']).map((kind) => {
+                                    Object.keys(dictTheme).map((kind) => {
                                         return (
-                                            <span key={kind}><Checkbox checked={pdKind.indexOf(kind) !== -1} onChange={() => { changePdKind(kind) }}>{dict['PdKind'][kind]}</Checkbox></span>
+                                            <span key={kind}><Checkbox checked={pdKind.indexOf(kind) !== -1} onChange={() => { changePdKind(kind) }}>{dictTheme[kind]}</Checkbox></span>
                                         )
                                     })
                                 }
@@ -361,7 +390,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                 pdKind.map((kind) => {
                                     return (
                                         <div className="opt" key={kind}>
-                                            <p>{dict['PdKind'][kind]}</p>
+                                            <p>{dictTheme[kind]}</p>
                                             <p className="close">x</p>
                                         </div>
                                     )
@@ -439,7 +468,8 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                                     </div>
                                                     <div className="side_right">
                                                         <div className="paly_theme">
-                                                            {`${item['name']} 航线编号 ${item['pd_num']}`}
+                                                            {item['kind'] !=4 && `${item['name']} 航线编号 ${item['pd_num']}`}
+                                                            {item['kind'] ==4 && `${item['name']}`}
                                                         </div>
                                                         <div className="detail">
                                                             <div className="two">
@@ -453,8 +483,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
                                                             <div style={{ display: 'flex' }}>
-                                                                <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
-                                                                <span className="star">{item['level']}星</span>
+                                                                <span className="theme">{renderTheme(item['theme'])}</span>
                                                             </div>
                                                             <span className="buck">￥{item['min_price']}</span>
                                                         </div>

@@ -7,7 +7,8 @@ const initialGlobalState ={
         PdKind:{
             1:'单船票',
             2:'邮轮套餐',
-            3:'河轮套餐'
+            3:'河轮套餐',
+            4:'跟团游'
         },
         ShipKind:{
             1:'河轮',

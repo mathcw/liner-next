@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import '../css/index.css';
-import { Rate, Carousel } from 'antd';
-import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Carousel } from 'antd';
 import Link from '../components/NextLink';
 import { withRouter } from 'next/router';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { host, getStaticFile } from '../lib/util';
-import Debounce from 'lodash.debounce';
+import { get,cache } from '../lib/lruCache';
+
 
 const Detail = ({ data, dict }) => {
 
@@ -27,14 +27,6 @@ const Detail = ({ data, dict }) => {
                 <div className="route_vague"></div>
                 <div className="text">
                     <span className="title">{data['name']}</span>
-                    <div className="bt_content">
-                        <div className="left">
-                            <div className="part">
-                                <Rate style={{ color: '#fff', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(data['level'])} />
-                                <span className="star">{data['level']}星</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
 
@@ -169,10 +161,6 @@ const Detail = ({ data, dict }) => {
                                                             <span style={{ lineHeight: '25px', position: 'absolute', right: '7%' }}>{item['day']}天{item['night']}夜</span>
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                            <div style={{ display: 'flex' }}>
-                                                                <Rate style={{ color: '#76C8E6', fontSize: '15px' }} allowHalf disabled defaultValue={parseFloat(item['level'] || 5)} />
-                                                                <span className="star">{item['level']}星</span>
-                                                            </div>
                                                             <span className='route-price'>￥{item['min_price']}</span>
                                                         </div>
                                                     </div>
@@ -306,10 +294,25 @@ Detail.getInitialProps = async (appContext) => {
         }
     }
     const res = await axios.get(`${host}api/WebApi/shipDetail?id=${query['id']}`);
-    if (res.status == 200 && res.data && res.data['data']) {
-        return {
-            data: res.data['data']
+    if (res.status == 200 && res.data) {
+        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+            const cache = get(`${host}api/WebApi/shipDetail?id=${query['id']}`);
+            if(!cache){
+                return {
+                    data: null
+                }
+            }
+            return cache;
         }
+        if(res.data['data']){
+            cache(`${host}api/WebApi/shipDetail?id=${query['id']}`,{
+                data: res.data['data']
+            })
+            return {
+                data: res.data['data']
+            }
+        }
+
     }
     return {
         data: null

@@ -5,6 +5,7 @@ import PageLoading from '../components/Loading';
 import { Provider } from 'react-redux';
 import Router from 'next/router'
 import withRedux from '../lib/withRedux';
+import { createCache } from '../lib/lruCache';
 
 class WebApp extends App {
 
@@ -44,6 +45,7 @@ class WebApp extends App {
         Router.events.on('routeChangeStart', this.startLoading)
         Router.events.on('routeChangeComplete', this.stopLoading)
         Router.events.on('routeChangeError', this.stopLoading)
+        createCache();
     }
 
     componentWillUnmount() {

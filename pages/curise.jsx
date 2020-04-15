@@ -6,6 +6,7 @@ import '../css/index.css';
 import Link from '../components/NextLink';
 import PageLoading from '../components/Loading';
 import {host,getStaticFile} from '../lib/util';
+import { get,cache } from '../lib/lruCache';
 
 const pageSize = 6;
 async function load(current, pageSize) {
@@ -16,11 +17,29 @@ async function load(current, pageSize) {
     const res = await axios.post(`${host}api/WebApi/company`, {
         ...query
     });
-    if (res.status == 200 && res.data && res.data['data']) {
-        return {
-            data: res.data['data']['data'],
-            total: res.data['data']['total'],
+
+    if (res.status == 200 && res.data) {
+        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+            const cache = get(`${host}api/WebApi/company`);
+            if(!cache){
+                return {
+                    data: [],
+                    total: 0,
+                }
+            }
+            return cache;
         }
+        if(res.data['data']){
+            cache(`${host}api/WebApi/company`,{
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            })
+            return {
+                data: res.data['data']['data'],
+                total: res.data['data']['total'],
+            }
+        }
+
     }
     return {
         data: [],
@@ -67,7 +86,7 @@ const Curise = ({initData,initTotal}) =>{
                         data.map(item => {
                             return (
                                 <div className='Curise-data' key={item['id']}>
-                                    <Link href="">
+                                    <Link href={`/curiseDetail?id=${item['id']}`}>
                                         <a>
                                             <img src={item['banner']=='' ?getStaticFile('/pic.png'):item['banner']} className="Curise-img"/>
                                             <div className="Curise-vague"></div>
