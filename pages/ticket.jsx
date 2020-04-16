@@ -478,7 +478,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                                             </div>
                                                             <div className="two">
                                                                 <div style={{ display: 'flex', height: '25px' }}><span className="name">目的地</span><span className="con">{item['destination']}</span></div>
-                                                                <div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>
+                                                                {item['kind'] ==4 &&<div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>}
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
