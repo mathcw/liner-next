@@ -1,4 +1,5 @@
 import App from 'next/app';
+import Head from 'next/head'
 import Layout from '../components/BasicLayout';
 import Contact from '../components/Contact';
 import PageLoading from '../components/Loading';
@@ -59,6 +60,9 @@ class WebApp extends App {
         const {loading} = this.state;
         return (
             <>
+                <Head>
+                    <title>乐邮环球</title>              
+                </Head>
                 <PageLoading loading={loading} />
                 <Layout pathName={pathName}>
                     <Provider store={reduxStore}>
