@@ -239,7 +239,7 @@ const Detail = ({ data, dict }) => {
 
                                                                 </div>
                                                                 <div className="image">
-                                                                    <img src={itin['pic_arr'].length > 0 ? itin['pic_arr'][0] : getStaticFile('/img.png')} />
+                                                                    <img src={itin['pic_arr'].length > 0 ? itin['pic_arr'][0] : getStaticFile('/pic.png')} />
                                                                 </div>
                                                                 <div className="pic_describe">
                                                                     {itin['des']}
