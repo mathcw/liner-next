@@ -61,6 +61,8 @@ class WebApp extends App {
         return (
             <>
                 <Head>
+                    <meta charSet="UTF-8" />
+                    <link rel="icon" href="/ico/favicon.ico"></link> 
                     <title>乐邮环球</title>              
                 </Head>
                 <PageLoading loading={loading} />
