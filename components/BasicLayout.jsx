@@ -24,7 +24,7 @@ export default (props) => {
                 <div style={{ height: '3rem', width: '30%', display: 'flex', alignItems: 'center', background: '#fff', lineHeight: '3rem' }}>
                     <div style={{ position: 'absolute' }}>
                         <img src={getStaticFile('/tell.png')} />
-                        <span style={{ fontSize: '0.8rem', color: '#000000', marginLeft: '1rem' }}>致电我们：010 249 8989</span>
+                        <span style={{ fontSize: '0.8rem', color: '#000000', marginLeft: '1rem' }}>致电我们:13801108018</span>
                     </div>
                 </div>
             </div>
