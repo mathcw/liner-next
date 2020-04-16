@@ -197,7 +197,6 @@ Detail.getInitialProps = async (appContext) => {
         }
     }
     const res = await axios.get(`${host}api/WebApi/curiseDetail?id=${query['id']}`);
-
     if (res.status == 200 && res.data) {
         if(!res.data['data'] && res.data['message'] =='重复操作' ){
             const cache = get(`${host}api/WebApi/curiseDetail?id=${query['id']}`);
