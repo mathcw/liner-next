@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/index.css';
-import {  Table,Modal,Input,Button,notification } from 'antd';
+import { Table, Modal, Input, Button, notification } from 'antd';
 import { UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import Link from '../components/NextLink';
 import { withRouter } from 'next/router';
@@ -8,7 +8,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { host, getStaticFile } from '../lib/util';
 import Debounce from 'lodash.debounce';
-import { get,cache } from '../lib/lruCache';
+import { get, cache } from '../lib/lruCache';
 
 
 const Detail = ({ data, dict }) => {
@@ -21,16 +21,16 @@ const Detail = ({ data, dict }) => {
         return fee;
     })
 
-    const related = data['其他航线'] ?data['其他航线']:[];
+    const related = data['其他航线'] ? data['其他航线'] : [];
 
     const [visible, setvisible] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
-    const [use_dep_date,setUseDepDate] = useState('');
-    const [use_room_type,setUseRoomType] = useState('');
-    const [use_price,setUsePrice] = useState('');
-    const [use_duoren_price,setDuorenPrice] = useState('');
-    const [FeeId,setFeeId] = useState('');
+    const [use_dep_date, setUseDepDate] = useState('');
+    const [use_room_type, setUseRoomType] = useState('');
+    const [use_price, setUsePrice] = useState('');
+    const [use_duoren_price, setDuorenPrice] = useState('');
+    const [FeeId, setFeeId] = useState('');
 
     const yuding = (record) => {
         setUseDepDate(record['dep_date']);
@@ -44,7 +44,7 @@ const Detail = ({ data, dict }) => {
     const handleOk = Debounce(() => {
         axios.post(`${host}api/WebApi/order`, {
             name, phone, use_dep_date, use_room_type, use_price,
-            use_duoren_price,group_id:data['id'],fee_id:FeeId
+            use_duoren_price, group_id: data['id'], fee_id: FeeId
         }).then(r => {
             setUseDepDate('');
             setUseRoomType('');
@@ -73,7 +73,7 @@ const Detail = ({ data, dict }) => {
             });
             setvisible(false);
         });
-    },500);
+    }, 500);
     const handleCancel = () => {
         setvisible(false);
         setUseDepDate('');
@@ -114,7 +114,7 @@ const Detail = ({ data, dict }) => {
             title: '报名',
             key: 'action',
             render: (text, record) => (
-                <span style={{color:'red',cursor:'pointer'}} onClick={()=>{yuding(record)}}>立即预订</span>
+                <span style={{ color: 'red', cursor: 'pointer' }} onClick={() => { yuding(record) }}>立即预订</span>
             ),
         },
     ];
@@ -155,19 +155,19 @@ const Detail = ({ data, dict }) => {
                 <div className="left_content">
                     {/* 产品信息 */}
                     {
-                        data['kind']!=4 && <div className="information" >
-                        <div className="top">
-                            <div className="title">
-                                <span className="a">{data['name']}</span>
+                        data['kind'] != 4 && <div className="information" >
+                            <div className="top">
+                                <div className="title">
+                                    <span className="a">{data['name']}</span>
+                                </div>
+                                <div className="image">
+                                    <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
+                                </div>
                             </div>
-                            <div className="image">
-                                <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
+                            <div className="information_content">
+                                {data['ship_dep']}
                             </div>
                         </div>
-                        <div className="information_content">
-                            {data['ship_dep']}
-                        </div>
-                    </div>
                     }
                     {/* 行程详情 */}
                     <div className="travel_detail" >
@@ -238,9 +238,12 @@ const Detail = ({ data, dict }) => {
                                                                     </div>
 
                                                                 </div>
-                                                                <div className="image">
-                                                                    <img src={itin['pic_arr'].length > 0 ? itin['pic_arr'][0] : getStaticFile('/pic.png')} />
-                                                                </div>
+                                                                {
+                                                                    itin['pic_arr'].length > 0 && <div className="image">
+                                                                        <img src={itin['pic_arr'].length > 0 ? itin['pic_arr'][0] : getStaticFile('/pic.png')} />
+                                                                    </div>
+                                                                }
+
                                                                 <div className="pic_describe">
                                                                     {itin['des']}
                                                                 </div>
@@ -322,7 +325,7 @@ const Detail = ({ data, dict }) => {
                             </div>
                         </div>
                         <div className="table">
-                            <Table dataSource={fees} columns={columns} pagination={false} rowKey="id"/>
+                            <Table dataSource={fees} columns={columns} pagination={false} rowKey="id" />
                         </div>
                     </div>
                     {/* 其他航线 */}
@@ -337,32 +340,32 @@ const Detail = ({ data, dict }) => {
                                 </div>
                             </div>
                             <div style={{ marginTop: '15px', padding: 0 }} className="content">
-                            {
-                                related.map((item)=>{
-                                    return (
-                                        <div className="chunk" key={item['id']}>
-                                            <Link href={`/details?id=${item['id']}`}>
-                                                <a>
-                                                    <div className="top">
-                                                        <img src={item['pic'] ==''? getStaticFile('/pic.png'):item['pic']} />
-                                                        <div className="cp">
-                                                            <span className="time">{item['day']}天{item['night']}夜</span>
+                                {
+                                    related.map((item) => {
+                                        return (
+                                            <div className="chunk" key={item['id']}>
+                                                <Link href={`/details?id=${item['id']}`}>
+                                                    <a>
+                                                        <div className="top">
+                                                            <img src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
+                                                            <div className="cp">
+                                                                <span className="time">{item['day']}天{item['night']}夜</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="bottom">
-                                                        <div>
-                                                            <span className="adress">{item['name']}</span>
+                                                        <div className="bottom">
+                                                            <div>
+                                                                <span className="adress">{item['name']}</span>
+                                                            </div>
+                                                            <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
+                                                                <span className="buck">￥{item['min_price']}</span>
+                                                            </div>
                                                         </div>
-                                                        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                            <span className="buck">￥{item['min_price']}</span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </Link>
-                                        </div>
-                                    )
-                                })
-                            }
+                                                    </a>
+                                                </Link>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
@@ -384,10 +387,10 @@ const Detail = ({ data, dict }) => {
                     ]}
                 >
                     <div className="modalContent">
-                        <Input addonBefore="出发日期" value={use_dep_date}  style={{ width: '100%', marginBottom: '10px' }} disabled/>
-                        <Input addonBefore="房型" value={use_room_type}  style={{ width: '100%', marginBottom: '10px' }} disabled/>
-                        <Input addonBefore="1/2人价" value={use_price}  style={{ width: '100%', marginBottom: '10px' }} disabled/>
-                        <Input addonBefore="3/4人价" value={use_duoren_price}  style={{ width: '100%', marginBottom: '10px' }} disabled/>
+                        <Input addonBefore="出发日期" value={use_dep_date} style={{ width: '100%', marginBottom: '10px' }} disabled />
+                        <Input addonBefore="房型" value={use_room_type} style={{ width: '100%', marginBottom: '10px' }} disabled />
+                        <Input addonBefore="1/2人价" value={use_price} style={{ width: '100%', marginBottom: '10px' }} disabled />
+                        <Input addonBefore="3/4人价" value={use_duoren_price} style={{ width: '100%', marginBottom: '10px' }} disabled />
 
                         <Input value={name} onChange={(e) => setName(e.target.value)} style={{ width: '100%', marginBottom: '10px' }} placeholder="您的姓名" prefix={<UserOutlined />} />
                         <Input value={phone} onChange={(e) => setPhone(e.target.value)} style={{ width: '100%', marginBottom: '10px' }} placeholder="您的电话" prefix={<PhoneOutlined />} />
@@ -417,17 +420,17 @@ Detail.getInitialProps = async (appContext) => {
     const res = await axios.get(`${host}api/WebApi/detail?id=${query['id']}`);
 
     if (res.status == 200 && res.data) {
-        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+        if (!res.data['data'] && res.data['message'] == '重复操作') {
             const cache = get(`${host}api/WebApi/detail?id=${query['id']}`);
-            if(!cache){
+            if (!cache) {
                 return {
                     data: null
                 }
             }
             return cache;
         }
-        if(res.data['data']){
-            cache(`${host}api/WebApi/detail?id=${query['id']}`,{
+        if (res.data['data']) {
+            cache(`${host}api/WebApi/detail?id=${query['id']}`, {
                 data: res.data['data']
             })
             return {
