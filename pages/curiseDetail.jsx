@@ -61,7 +61,7 @@ const Detail = ({ data }) => {
                                                     <div className="route-content">
                                                         <div>
                                                             <span className="route-title">{item['name']}</span>
-                                                            <span style={{ lineHeight: '25px', position: 'absolute', right: '7%' }}>{item['day']}天{item['night']}夜</span>
+                                                            <span style={{ lineHeight: '25px', position: 'absolute', right: '7%' }}>{item['day']}天{item['night']}晚</span>
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
                                                             <span className='route-price'>￥{item['min_price']}</span>

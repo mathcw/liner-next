@@ -10,7 +10,6 @@ import { host, getStaticFile } from '../lib/util';
 import Debounce from 'lodash.debounce';
 import { get, cache } from '../lib/lruCache';
 
-
 const Detail = ({ data, dict }) => {
 
     const dictDepCity = dict['depCity'] ? dict['depCity'] : {};
@@ -132,7 +131,7 @@ const Detail = ({ data, dict }) => {
                         <div className="left">
                             <div className="part" style={{ borderRight: '1px solid #fff', paddingRight: '20px' }}>
                                 <img src={getStaticFile('/time.png')} />
-                                <span className="star">{data['day']}天{data['night']}夜</span>
+                                <span className="star">{data['day']}天{data['night']}晚</span>
                             </div>
                             <div className="part">
                                 <img src={getStaticFile('/price.png')} />
@@ -164,9 +163,16 @@ const Detail = ({ data, dict }) => {
                                     <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
                                 </div>
                             </div>
-                            <div className="information_content">
-                                {data['ship_dep']}
-                            </div>
+
+                            <Input.TextArea autoSize value={data['ship_dep']}
+                                style={{
+                                    width: '100%'
+                                    , fontSize: '14px'
+                                    , fontWeight: '500'
+                                    , color: 'rgba(0,0,0,0.45)'
+                                    , border: 'none'
+                                }}
+                                readOnly />
                         </div>
                     }
                     {/* 行程详情 */}
@@ -180,20 +186,6 @@ const Detail = ({ data, dict }) => {
                             </div>
                         </div>
                         <div className="teavel_content">
-                            <div className="left">
-                                <div className="left_mation">
-                                    <span className="front">持续时间：</span>
-                                    <span className="later">{data['day']}天{data['night']}晚</span>
-                                </div>
-                                <div className="left_mation">
-                                    <span className="front">出发地点：</span>
-                                    <span className="later">{dictDepCity[data['dep_city_id']]}</span>
-                                </div>
-                                <div className="left_mation">
-                                    <span className="front">目  的 地：</span>
-                                    <span className="later">{dictDesCity[data['destination']]}</span>
-                                </div>
-                            </div>
                             <div className="right">
                                 <div className="feature">
                                     {
@@ -203,9 +195,17 @@ const Detail = ({ data, dict }) => {
                                                 <img src={getStaticFile('/point.png')} />
                                                 <span className="text">产品特色</span>
                                             </div>
-                                            <div className="content">
-                                                {data['bright_spot']}
-                                            </div>
+                                            <Input.TextArea autoSize value={data['bright_spot']}
+                                                style={{
+                                                    width: '100%'
+                                                    , fontSize: '14px'
+                                                    , fontWeight: '500'
+                                                    , color: 'rgba(0,0,0,0.45)'
+                                                    , marginTop: '20px'
+                                                    , paddingLeft: '40px'
+                                                    , border: 'none'
+                                                }}
+                                                readOnly />
                                             <div className="pro_detail">
                                                 {
                                                     data['itins'] && data['itins'].map(itin => {
@@ -213,17 +213,30 @@ const Detail = ({ data, dict }) => {
                                                             <div className="among" key={itin['id']}>
                                                                 <div className="title">
                                                                     <span className="num">{itin['order']}</span>
-                                                                    <span className="text">{itin['destination']}</span>
+                                                                    <div className="text">{itin['dep_city'] == '' ? '' : itin['dep_city']}
+                                                                        {(itin['dep_city'] != '' && itin['destination'] != '') ? '-' : ''}
+                                                                        {itin['destination'] != '' ? itin['destination'] : ''}
+                                                                    </div>
                                                                 </div>
                                                                 <div className="tdc">
-                                                                    <div className="part">
-                                                                        <img src={getStaticFile('/time2.png')} />
-                                                                        <div className="text">{itin['arr_time']}-{itin['level_time']}</div>
-                                                                    </div>
-                                                                    <div className="part">
-                                                                        <img src={getStaticFile('/place.png')} />
-                                                                        <div className="text">{itin['dep_city']}-{itin['destination']}</div>
-                                                                    </div>
+                                                                    {
+                                                                        (itin['arr_time'] != '' || itin['level_time'] != '') && <div className="part">
+                                                                            <img src={getStaticFile('/time2.png')} />
+                                                                            <div className="text">
+                                                                                {itin['arr_time'] == '' ? '' : itin['arr_time']}
+                                                                                {(itin['arr_time'] != '' && itin['level_time'] != '') ? '-' : ''}
+                                                                                {itin['level_time'] != '' ? itin['level_time'] : ''}</div>
+                                                                        </div>
+                                                                    }
+                                                                    {
+                                                                        (itin['dep_city'] != '' || itin['destination'] != '') && <div className="part">
+                                                                            <img src={getStaticFile('/place.png')} />
+                                                                            <div className="text">
+                                                                                {itin['dep_city'] == '' ? '' : itin['dep_city']}
+                                                                                {(itin['dep_city'] != '' && itin['destination'] != '') ? '-' : ''}
+                                                                                {itin['destination'] != '' ? itin['destination'] : ''}</div>
+                                                                        </div>
+                                                                    }
                                                                     <div className="part">
                                                                         <img src={getStaticFile('/catering.png')} />
                                                                         {
@@ -244,9 +257,18 @@ const Detail = ({ data, dict }) => {
                                                                     </div>
                                                                 }
 
-                                                                <div className="pic_describe">
-                                                                    {itin['des']}
-                                                                </div>
+                                                                <Input.TextArea autoSize value={itin['des']}
+                                                                    style={{
+                                                                        width: '100%'
+                                                                        , fontSize: '14px'
+                                                                        , fontWeight: '500'
+                                                                        , color: 'rgba(0,0,0,0.45)'
+                                                                        , marginTop: '20px'
+                                                                        , paddingLeft: '40px'
+                                                                        , lineHeight: '28px'
+                                                                        , border: 'none'
+                                                                    }}
+                                                                    readOnly />
                                                             </div>
                                                         )
                                                     })
@@ -273,46 +295,93 @@ const Detail = ({ data, dict }) => {
                                 <img src={getStaticFile('/right.png')} />
                                 <span className="text">预订须知</span>
                             </div>
-                            <div className="content">
-                                {data['book_info']}
-                            </div>
+                            <Input.TextArea autoSize value={data['book_info']}
+                                style={{
+                                    width: '100%'
+                                    , minHeight: '190px'
+                                    , fontSize: '14px'
+                                    , fontWeight: '500'
+                                    , color: 'rgba(0,0,0,0.45)'
+                                    , marginTop: '20px'
+                                    , paddingLeft: '40px'
+                                    , border: 'none'
+                                }}
+                                readOnly />
                         </div>
-                        <div className="pro_information">
-                            <div className="head">
-                                <img src={getStaticFile('/right.png')} />
-                                <span className="text">费用说明</span>
+                        {/* {
+                            data['fee_info'] != '' && <div className="pro_information">
+                                <div className="head">
+                                    <img src={getStaticFile('/right.png')} />
+                                    <span className="text">旅游费用</span>
+                                </div>
+                                <Input.TextArea autoSize value={data['fee_info']}
+                                    style={{
+                                        width: '100%'
+                                        , fontSize: '14px'
+                                        , fontWeight: '500'
+                                        , color: 'rgba(0,0,0,0.45)'
+                                        , marginTop: '20px'
+                                        , paddingLeft: '40px'
+                                        , border: 'none'
+                                    }}
+                                    readOnly />
                             </div>
-                            <div className="content">
-                                {data['fee_info']}
-                            </div>
-                        </div>
-                        <div className="pro_information">
+                        } */}
+                        {data['fee_include'] && <div className="pro_information">
                             <div className="head">
                                 <img src={getStaticFile('/right.png')} />
                                 <span className="text">费用包含</span>
                             </div>
-                            <div className="content">
-                                {data['fee_include']}
-                            </div>
+                            <Input.TextArea autoSize value={data['fee_include']}
+                                style={{
+                                    width: '100%'
+                                    , fontSize: '14px'
+                                    , fontWeight: '500'
+                                    , color: 'rgba(0,0,0,0.45)'
+                                    , marginTop: '20px'
+                                    , paddingLeft: '40px'
+                                    , border: 'none'
+                                }}
+                                readOnly />
                         </div>
-                        <div className="pro_information">
+                        }
+                        {data['fee_exclude'] && <div className="pro_information">
                             <div className="head">
                                 <img src={getStaticFile('/right.png')} />
                                 <span className="text">费用不含</span>
                             </div>
-                            <div className="content">
-                                {data['fee_exclude']}
-                            </div>
+                            <Input.TextArea autoSize value={data['fee_exclude']}
+                                style={{
+                                    width: '100%'
+                                    , fontSize: '14px'
+                                    , fontWeight: '500'
+                                    , color: 'rgba(0,0,0,0.45)'
+                                    , marginTop: '20px'
+                                    , paddingLeft: '40px'
+                                    , border: 'none'
+                                }}
+                                readOnly />
                         </div>
-                        <div className="pro_information">
-                            <div className="head">
-                                <img src={getStaticFile('/right.png')} />
-                                <span className="text">取消条款</span>
+                        }
+                        {
+                            data['cancel_info'] && <div className="pro_information">
+                                <div className="head">
+                                    <img src={getStaticFile('/right.png')} />
+                                    <span className="text">取消条款</span>
+                                </div>
+                                <Input.TextArea autoSize value={data['cancel_info']}
+                                    style={{
+                                        width: '100%'
+                                        , fontSize: '14px'
+                                        , fontWeight: '500'
+                                        , color: 'rgba(0,0,0,0.45)'
+                                        , marginTop: '20px'
+                                        , paddingLeft: '40px'
+                                        , border: 'none'
+                                    }}
+                                    readOnly />
                             </div>
-                            <div className="content">
-                                {data['cancel_info']}
-                            </div>
-                        </div>
+                        }
                     </div>
                     {/* 班期房型 */}
                     <div className="schedule_room" >
@@ -349,7 +418,7 @@ const Detail = ({ data, dict }) => {
                                                         <div className="top">
                                                             <img src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
                                                             <div className="cp">
-                                                                <span className="time">{item['day']}天{item['night']}夜</span>
+                                                                <span className="time">{item['day']}天{item['night']}晚</span>
                                                             </div>
                                                         </div>
                                                         <div className="bottom">
@@ -371,6 +440,39 @@ const Detail = ({ data, dict }) => {
                     </div>
                 </div>
             </div >
+            <div style={{
+                display: 'flex',
+                flexDirection:'column',
+                alignItems: 'center',
+                borderBottom:  '1px dashed rgba(0,0,0,0.25)' ,
+                position: 'fixed',
+                left: '60px',
+                bottom: '30px',
+                fontSize: '14px',
+                border:'1px solid',
+                backgroundColor:'white',
+                zIndex:'999',
+                padding: '5px 5px 5px 5px'
+            }}>
+                <span>产品简介</span>
+                <div className="detailMation">
+                    <span className="front">持续时间：</span>
+                    <span className="later">{data['day']}天{data['night']}晚</span>
+                </div>
+                {
+                    data['dep_city_id']!=0 && <div className="detailMation">
+                    <span className="front">出发地点：</span>
+                    <span className="later">{dictDepCity[data['dep_city_id']]}</span>
+                </div>
+                }
+                {
+                    data['destination']!=0 && <div className="detailMation">
+                    <span className="front">目  的 地：</span>
+                    <span className="later">{dictDesCity[data['destination']]}</span>
+                </div>
+                }
+
+            </div>
             <div>
                 <Modal
                     visible={visible}
@@ -397,11 +499,29 @@ const Detail = ({ data, dict }) => {
                     </div>
                 </Modal>
                 <style jsx>{`
-        modalContent{
-            display:flex;
-            flex-direction:column;
-        }
-        `}</style>
+                .modalContent{
+                    display:flex;
+                    flex-direction:column;
+                }
+                .detailMation{
+                    display: flex;
+                    height: 36px;
+                    align-items: center;
+                    border-bottom:  1px dashed rgba(0,0,0,0.25) ;
+                }
+                .front{
+                    font-size:14px;
+                    font-weight:500;
+                    color:rgba(0,0,0,1);
+                    line-height:20px;
+                }
+                .later{
+                    font-size:14px;
+                    font-weight:300;
+                    color:rgba(0,0,0,0.65);
+                    line-height:20px;
+                }
+                `}</style>
             </div>
 
         </>
