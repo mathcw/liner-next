@@ -93,7 +93,7 @@ const Detail = ({ data, dict }) => {
                             }
                             {
                                 data['build_time'] != '' && <div style={{ minWidth: '15%' }}>
-                                    <span className="ParmsFront" style={{ marginLeft: '20px' }}>建造年份</span>
+                                    <span className="ParmsFront" style={{ marginLeft: '20px' }}>翻新时间</span>
                                     <span className="ParmsLater">{data['build_time']}</span>
                                 </div>
 
@@ -122,6 +122,14 @@ const Detail = ({ data, dict }) => {
                                 data['speed'] != 0 && <div style={{ minWidth: '15%' }}>
                                     <span className="ParmsFront" style={{ marginLeft: '20px' }}>航速</span>
                                     <span className="ParmsLater">{data['speed']}</span>
+                                </div>
+                            }
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            {
+                                data['tonnage'] != 0 && <div style={{ minWidth: '15%' }}>
+                                    <span className="ParmsFront">吨位</span>
+                                    <span className="ParmsLater">{data['tonnage']}</span>
                                 </div>
                             }
                         </div>
