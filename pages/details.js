@@ -398,7 +398,7 @@ const Detail = ({ data, dict }) => {
                         </div>
                     </div>
                     {/* 其他航线 */}
-                    <div className="other_route" >
+                    {related.length !=0 && <div className="other_route" >
                         <div className="row">
                             <div className="top">
                                 <div className="title">
@@ -408,36 +408,30 @@ const Detail = ({ data, dict }) => {
                                     <img src={getStaticFile('/back.png')} style={{ width: '120px' }} />
                                 </div>
                             </div>
-                            <div style={{ marginTop: '15px', padding: 0 }} className="content">
-                                {
-                                    related.map((item) => {
-                                        return (
-                                            <div className="chunk" key={item['id']}>
-                                                <Link href={`/details?id=${item['id']}`}>
-                                                    <a>
-                                                        <div className="top">
-                                                            <img src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
-                                                            <div className="cp">
-                                                                <span className="time">{item['day']}天{item['night']}晚</span>
-                                                            </div>
+                            <div style={{ marginTop: '15px', padding: 0,display:'flex',flexWrap:'wrap',justifyContent:'wrap' }}>
+                            {
+                                related.map((item) => {
+                                    return (
+                                        <div style={{ width: '30%', padding: 10 }} key={item['id']}>
+                                            <Link href={`/details?id=${item['id']}`} >
+                                                <a>
+                                                    <img style={{width:'100%',height:'256px'}} src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
+                                                    <div style={{display:'flex',flexDirection:'column',width:'100%',height:'100px',boxShadow:'0px 1px 8px 0px rgba(0,0,0,0.1)',padding:'12px 0px 0px 15px'}} >
+                                                        <span style={{fontSize:'18px',fontWeight:'500',color:'rgba(0,0,0,1)',lineHeight:'25px'}}>{item['name']}</span>
+                                                        <div style={{display:'flex',justifyContent:'space-between'}}>
+                                                            <span style={{ lineHeight: '25px'}}>{item['day']}天{item['night']}晚</span>
+                                                            <span style={{fontSize:'18px',fontWeight:'500',color:'rgba(245,105,97,1)',lineHeight:'25px'}}>￥{item['min_price']}</span>
                                                         </div>
-                                                        <div className="bottom">
-                                                            <div>
-                                                                <span className="adress">{item['name']}</span>
-                                                            </div>
-                                                            <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
-                                                                <span className="buck">￥{item['min_price']}</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </Link>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                                                    </div>
+                                                </a>
+                                            </Link>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
-                    </div>
+                        </div>
+                    </div>}
                 </div>
             </div >
             <div style={{

@@ -59,11 +59,9 @@ const Detail = ({ data }) => {
                                                 <a>
                                                     <img className="route-img" src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
                                                     <div className="route-content">
-                                                        <div>
-                                                            <span className="route-title">{item['name']}</span>
-                                                            <span style={{ lineHeight: '25px', position: 'absolute', right: '7%' }}>{item['day']}天{item['night']}晚</span>
-                                                        </div>
-                                                        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '5px' }}>
+                                                        <span className="route-title">{item['name']}</span>
+                                                        <div style={{display:'flex',justifyContent:'space-between'}}>
+                                                            <span style={{ lineHeight: '25px'}}>{item['day']}天{item['night']}晚</span>
                                                             <span className='route-price'>￥{item['min_price']}</span>
                                                         </div>
                                                     </div>
@@ -88,10 +86,9 @@ const Detail = ({ data }) => {
                     }
                     .route-content{
                         display: flex;
-                        position: relative;
                         flex-direction: column;
                         width:100%;
-                        height: 80px;
+                        height: 100px;
                         box-shadow:0px 1px 8px 0px rgba(0,0,0,0.1);
                         padding: 12px 0px 0px 15px;
                     }
@@ -106,8 +103,6 @@ const Detail = ({ data }) => {
                         font-weight:500;
                         color:rgba(245,105,97,1);
                         line-height:25px;
-                        position: absolute;
-                        right: 7%;
                     }
                     .content{
                         display: flex;
