@@ -45,7 +45,12 @@ export default (props) => {
                     <div className="trademark">
                         <span className="bottom_titleone">乐邮环球</span>
                         <span className="bottom_content">北京市朝阳区新源里16号琨莎中心A座三层</span>
-                        <span className="bottom_content">©版权所有2020 乐邮环球。版权所有</span>
+                        <span className="bottom_content">©版权所有2020 乐邮环球 版权所有</span>
+                        <span className="bottom_content">
+                            <a href="http://www.beian.miit.gov.cn/">
+                                京ICP备20014193号
+                            </a>
+                        </span>
                     </div>
                     <div className="trademark">
                         <span className="bottom_title">关于我们</span>
