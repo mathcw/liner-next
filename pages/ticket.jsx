@@ -441,11 +441,11 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                     {orderBy === 'create_at' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
                                     {orderBy === 'create_at' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
                                 </Menu.Item>
-                                <Menu.Item key="order_nums" >
+                                {/* <Menu.Item key="order_nums" >
                                     <span onClick={() => { clickOrderBY('order_nums') }}>销量</span>
                                     {orderBy === 'order_nums' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
                                     {orderBy === 'order_nums' && orderDir === 'asc' && <UpOutlined onClick={() => { clickOrderDir() }} />}
-                                </Menu.Item>
+                                </Menu.Item> */}
                                 <Menu.Item key="min_price">
                                     <span onClick={() => { clickOrderBY('min_price') }}>价钱</span>
                                     {orderBy === 'min_price' && orderDir === 'desc' && <DownOutlined onClick={() => { clickOrderDir() }} />}
