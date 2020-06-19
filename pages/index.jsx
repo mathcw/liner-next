@@ -1,20 +1,46 @@
 
 import axios from 'axios';
 import { useState } from 'react';
-import { Input,Button,Pagination } from 'antd';
+import { Input, Button, Pagination, Carousel } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import '../css/index.css';
 import PageLoading from '../components/Loading';
-import {host,getStaticFile} from '../lib/util';
+import { host, getStaticFile } from '../lib/util';
 import Router from 'next/router';
 import getConfig from 'next/config'
-import { get,cache } from '../lib/lruCache';
+import { get, cache } from '../lib/lruCache';
 
 const { publicRuntimeConfig } = getConfig();
 
 const pageSize = 6;
-async function load(search,current, pageSize) {
-    const query = {...search};
+async function load_banner() {
+    const res = await axios.post(`${host}api/WebApi/banner`);
+
+    if (res.status == 200 && res.data) {
+        if (!res.data['data'] && res.data['message'] == '重复操作') {
+            const cache = get(`${host}api/WebApi/banner`);
+            if (!cache) {
+                return {
+                    data: [],
+                }
+            }
+            return cache;
+        }
+        if (res.data['data']) {
+            cache(`${host}api/WebApi/banner`, {
+                data: res.data['data']['data'],
+            })
+            return {
+                data: res.data['data']['data'],
+            }
+        }
+    }
+    return {
+        data: []
+    }
+}
+async function load(search, current, pageSize) {
+    const query = { ...search };
     query['start'] = pageSize * (current - 1);
     query['limit'] = pageSize;
 
@@ -23,9 +49,9 @@ async function load(search,current, pageSize) {
     });
 
     if (res.status == 200 && res.data) {
-        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+        if (!res.data['data'] && res.data['message'] == '重复操作') {
             const cache = get(`${host}api/WebApi/bourn`);
-            if(!cache){
+            if (!cache) {
                 return {
                     data: [],
                     total: 0,
@@ -33,8 +59,8 @@ async function load(search,current, pageSize) {
             }
             return cache;
         }
-        if(res.data['data']){
-            cache(`${host}api/WebApi/bourn`,{
+        if (res.data['data']) {
+            cache(`${host}api/WebApi/bourn`, {
                 data: res.data['data']['data'],
                 total: res.data['data']['total'],
             })
@@ -49,22 +75,20 @@ async function load(search,current, pageSize) {
         total: 0,
     }
 }
-const Bourn = ({initData,initTotal}) =>{
+const Bourn = ({ initData, initTotal, initBanner }) => {
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(initTotal);
 
     const [data, setData] = useState(initData);
 
     const [loading, setLoading] = useState(false);
-    const [name,setName] = useState('');
-
-    const searchCity = (city_id) =>{
+    const searchCity = (city_id) => {
         Router.push({
             pathname: `${publicRuntimeConfig.basePath || ''}/ticket`,
             query: {
-                destination:city_id
+                destination: city_id
             }
-          })
+        })
     }
 
     const pageNumChange = page => {
@@ -79,31 +103,22 @@ const Bourn = ({initData,initTotal}) =>{
         })
     }
 
-    const search = () =>{
-        setCurrent(1);
-        setLoading(true);
-        load({name},1, pageSize).then(r => {
-            setTotal(r.total);
-            setData(r.data);
-            setLoading(false);
-        }, e => {
-            setLoading(false);
-        })
-    }
     return (
         <>
             <PageLoading loading={loading} />
             {/* 顶部图片 */}
             <div className="Bourn-top">
-                <img className="Bourn-top-img" src={getStaticFile("/route_back.png")} />
-                <div className="Bourn_vague"></div>
-                <div className="Bourn_search">
-                    <span className="Bourn_search_label">想去哪儿</span>
-                    <div style={{display:'flex'}}>
-                        <Input value={name} onChange={(e)=>setName(e.target.value)} style={{ width: 180 ,marginBottom:20 }} placeholder="搜索" />
-                        <Button type="primary" icon={<SearchOutlined />} onClick={search}>搜一下</Button>
-                    </div>
-                </div>
+                <Carousel autoplay>
+                    {
+                        initBanner.map((item) => {
+                            return (
+                                <a href={item['url']?item['url']:'/'}>
+                                    <img className="Carousel-img" src={item['pic'] ? item['pic'] : getStaticFile('/route_detail_back.png')} />
+                                </a>
+                            )
+                        })
+                    }
+                </Carousel>
                 <style jsx>{`
                     .Bourn-top{
                         width: 100%;
@@ -147,13 +162,16 @@ const Bourn = ({initData,initTotal}) =>{
                         border-bottom-right-radius: 5px;
                         border-bottom-left-radius
                     }
+                    .Carousel-img{
+                        height:495px;
+                    }
                     `}</style>
             </div>
             {/* 下面内容部分 */}
             <div style={{
-                    display:'flex',
-                    flexDirection:'column',
-                }}>
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
                 <div className="Bourn-title">
                     <span>热门目的地</span>
                 </div>
@@ -162,9 +180,9 @@ const Bourn = ({initData,initTotal}) =>{
                         data.map(item => {
                             return (
                                 <div className='Bourn-data' key={item['city_id']}>
-                                    <div onClick={()=>{searchCity(item['city_id'])}}>
+                                    <div onClick={() => { searchCity(item['city_id']) }}>
                                         <a>
-                                            <img src={item['pic']=='' ?getStaticFile('/pic.png'):item['pic']} className="Bourn-img"/>
+                                            <img src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} className="Bourn-img" />
                                             <div className="Bourn-vague"></div>
                                             <div className="Bourn-name">
                                                 <span>{item['name']}</span>
@@ -181,8 +199,8 @@ const Bourn = ({initData,initTotal}) =>{
                     marginTop: '60px',
                     position: 'relative',
                 }}>
-                    <Pagination 
-                        style={{position:'absolute',right:'15%'}}
+                    <Pagination
+                        style={{ position: 'absolute', right: '15%' }}
                         defaultPageSize={pageSize}
                         total={total}
                         showSizeChanger={false}
@@ -241,11 +259,14 @@ const Bourn = ({initData,initTotal}) =>{
         </>
     );
 }
-Bourn.getInitialProps = async (appContext) =>{
-    const res = await load({},1, pageSize);
+Bourn.getInitialProps = async (appContext) => {
+    const res = await load({}, 1, pageSize);
+
+    const banner = await load_banner();
     return {
         initData: res.data,
-        initTotal: res.total
+        initTotal: res.total,
+        initBanner: banner.data
     }
 }
 

@@ -1,32 +1,60 @@
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Input } from 'antd';
+
+import Router from 'next/router';
+import getConfig from 'next/config'
+
+import { getStaticFile } from '../lib/util';
 import Link from '../components/NextLink'
 import '../css/index.css'
-import {getStaticFile} from '../lib/util';
 
 const { Content } = Layout;
+
+const { publicRuntimeConfig } = getConfig();
+
+const searchCity = (v) => {
+    Router.push({
+        pathname: `${publicRuntimeConfig.basePath || ''}/ticket`,
+        query: {
+            name: v
+        }
+    })
+}
+
 export default (props) => {
-    const {pathName} = props;
+    const { pathName } = props;
     return (
         <Layout>
-            <div style={{ width: '100%', height: '3rem', background: '#FA6767' }}></div>
-            <div style={{ width: '100%', background: '#fff', paddingLeft: '8%', display: 'flex' }}>
-                <Menu
-                    theme="light"
-                    mode="horizontal"
-                    selectedKeys={[pathName]}
-                    style={{ border: '0', width: '70%' }}
-                >
-                    <Menu.Item key="/" ><Link href="/"><a>首页</a></Link></Menu.Item>
-                    <Menu.Item key="/ticket"><Link href="/ticket"><a>全部产品</a></Link></Menu.Item>
-                    <Menu.Item key="/curise"><Link href="/curise"><a>邮轮公司</a></Link></Menu.Item>
-                    <Menu.Item key="/ship"><Link href="/ship"><a>邮轮展示</a></Link></Menu.Item>
-                </Menu>
-                <div style={{ height: '3rem', width: '30%', display: 'flex', alignItems: 'center', background: '#fff', lineHeight: '3rem' }}>
+            <div style={{ width: '100%', display: 'flex', background: '#fff' }}>
+                <div style={{ width: '20%', paddingLeft: '8%' }}>
+                    <img src={getStaticFile('/pic.png')} style={{ width: '200px', height: '150px' }} />
+                </div>
+                <div style={{ display: 'flex', width: '50%',padding:'5%' }}>
+                <Input.Search
+                    placeholder='您想去哪？'
+                    enterButton="搜索"
+                    size="large"
+                    onSearch={searchCity}
+                    />
+                </div>
+                <div style={{ width: '30%', display: 'flex', alignItems: 'center', lineHeight: '3rem' }}>
                     <div style={{ position: 'absolute' }}>
                         <img src={getStaticFile('/tell.png')} />
                         <span style={{ fontSize: '0.8rem', color: '#000000', marginLeft: '1rem' }}>致电我们:4000582007</span>
                     </div>
                 </div>
+            </div>
+            <div style={{ width: '100%', background: '#2dbb55', paddingLeft: '8%', display: 'flex' }}>
+                <Menu
+                    theme="light"
+                    mode="horizontal"
+                    selectedKeys={[pathName]}
+                    style={{ border: '0', width: '70%', background: '#2dbb55' }}
+                >
+                    <Menu.Item key="/" ><Link href="/"><a style={{ color: '#fff' }}>首页</a></Link></Menu.Item>
+                    <Menu.Item key="/ticket"><Link href="/ticket"><a style={{ color: '#fff' }}>全部产品</a></Link></Menu.Item>
+                    <Menu.Item key="/curise"><Link href="/curise"><a style={{ color: '#fff' }}>邮轮公司</a></Link></Menu.Item>
+                    <Menu.Item key="/ship"><Link href="/ship"><a style={{ color: '#fff' }}>邮轮展示</a></Link></Menu.Item>
+                </Menu>
             </div>
             <Content >
                 <div className="content">{props.children}</div>

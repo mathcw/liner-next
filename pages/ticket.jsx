@@ -8,7 +8,7 @@ import PageLoading from '../components/Loading';
 import Link from '../components/NextLink'
 import '../css/index.css'
 import { host, getStaticFile } from '../lib/util';
-import { get,cache } from '../lib/lruCache';
+import { get, cache } from '../lib/lruCache';
 import { useState, useMemo, useEffect } from 'react';
 import moment from "moment";
 
@@ -31,9 +31,9 @@ async function load(search, current, pageSize) {
         ...query
     });
     if (res.status == 200 && res.data) {
-        if(!res.data['data'] && res.data['message'] =='重复操作' ){
+        if (!res.data['data'] && res.data['message'] == '重复操作') {
             const cache = get(`${host}api/WebApi/ticket`);
-            if(!cache){
+            if (!cache) {
                 return {
                     data: [],
                     total: 0,
@@ -41,8 +41,8 @@ async function load(search, current, pageSize) {
             }
             return cache;
         }
-        if(res.data['data']){
-            cache(`${host}api/WebApi/ticket`,{
+        if (res.data['data']) {
+            cache(`${host}api/WebApi/ticket`, {
                 data: res.data['data']['data'],
                 total: res.data['data']['total'],
             })
@@ -72,6 +72,9 @@ function init(query) {
     if (query.depDateFrom && (typeof query.depDateFrom === 'string')) {
         rst['depDateFrom'] = query.depDateFrom;
     }
+    if (query.name && (typeof query.name === 'string')) {
+        rst['keyWord'] = query.name
+    }
     return rst;
 }
 const Ticket = ({ dict, initData, initTotal, query }) => {
@@ -85,7 +88,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
     const [depMore, setdepMore] = useState(false);
     const [comMore, setcomMore] = useState(false);
 
-    const [keyWord, setWord] = useState('');
+    const [keyWord, setWord] = useState(initCond['keyWord'] ? initCond['keyWord'] : '');
     const [depDateFrom, setDepDateFrom] = useState(initCond['depDateFrom'] ? initCond['depDateFrom'] : '');
     const [depDateTo, setDepDateTo] = useState('');
 
@@ -136,7 +139,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
             dep_city_id: depCity,
             destination: desCity,
             cruise_company_id: companys,
-            name: keyWord,
+            name: value,
             dep_date_to: depDateTo,
             dep_date_from: depDateFrom,
             order_field: orderBy,
@@ -172,6 +175,13 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         });
     }, [pdKind, depCity, desCity, companys, orderBy, orderDir])
 
+    useEffect(() => {
+        setData(initData);
+        setTotal(initTotal);
+        if (initCond['keyWord']) {
+            setWord(initCond['keyWord'])
+        }
+    }, [initData, initTotal, initCond])
 
 
     const clearPdKind = () => {
@@ -244,11 +254,11 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
         }
     }
 
-    const renderTheme = (theme) =>{
-        if(theme == ''){
+    const renderTheme = (theme) => {
+        if (theme == '') {
             return ''
         };
-        const theme_arr = theme.split(',').map(item=>{
+        const theme_arr = theme.split(',').map(item => {
             return dictTheme[item];
         })
         return theme_arr.join(',');
@@ -272,7 +282,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                     <div className="key_name">
                         <div className="text">名称关键字</div>
                         <div className="content">
-                            <Search style={{ width: 180 }} placeholder="搜索关键字" onSearch={value => { searchClick(value) }} enterButton />
+                            <Search value={keyWord} style={{ width: 180 }} placeholder="搜索关键字" onChange={(e) => { setWord(e.target.value) }} onSearch={value => { searchClick(value) }} enterButton />
                         </div>
                     </div>
                     <div className="go_date">
@@ -461,15 +471,15 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                             <div className="content" style={{ padding: '0' }}>
                                                 <div className="side">
                                                     <div className="side_left">
-                                                        <img src={item['pic'] ==''? getStaticFile('/pic.png'):item['pic']} />
+                                                        <img src={item['pic'] == '' ? getStaticFile('/pic.png') : item['pic']} />
                                                         <div className="cp">
                                                             <span className="time">{`${item['day']}天${item['night']}晚`}</span>
                                                         </div>
                                                     </div>
                                                     <div className="side_right">
                                                         <div className="paly_theme">
-                                                            {item['kind'] !=4 && `${item['name']} 航线编号 ${item['pd_num']}`}
-                                                            {item['kind'] ==4 && `${item['name']}`}
+                                                            {item['kind'] != 4 && `${item['name']} 航线编号 ${item['pd_num']}`}
+                                                            {item['kind'] == 4 && `${item['name']}`}
                                                         </div>
                                                         <div className="detail">
                                                             <div className="two">
@@ -478,7 +488,7 @@ const Ticket = ({ dict, initData, initTotal, query }) => {
                                                             </div>
                                                             <div className="two">
                                                                 <div style={{ display: 'flex', height: '25px' }}><span className="name">目的地</span><span className="con">{item['destination']}</span></div>
-                                                                {item['kind'] !=4 &&<div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>}
+                                                                {item['kind'] != 4 && <div style={{ display: 'flex' }}><span className="name">邮轮船只</span><span className="con">{dictCruiseShip[item['ship_id']]}</span></div>}
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '15px' }}>
@@ -534,6 +544,10 @@ Ticket.getInitialProps = async (appContext) => {
     if (query['depDateFrom'] && query['depDateFrom'] != '' && (typeof query['depDateFrom'] == 'number' || typeof query['depDateFrom'] == 'string')) {
         search['dep_date_from'] = query['depDateFrom'];
     }
+    if (query['name'] && query['name'] != '' && (typeof query['name'] == 'string')) {
+        search['name'] = query['name'];
+    }
+    debugger;
     const res = await load(search, 1, pageSize);
     return {
         initData: res.data,
