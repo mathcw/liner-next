@@ -110,9 +110,9 @@ const Bourn = ({ initData, initTotal, initBanner }) => {
             <div className="Bourn-top">
                 <Carousel autoplay>
                     {
-                        initBanner.map((item) => {
+                        initBanner.map((item,index) => {
                             return (
-                                <a href={item['url']?item['url']:'/'}>
+                                <a key={`carousel${index}`} href={item['url']?item['url']:'/'}>
                                     <img className="Carousel-img" src={item['pic'] ? item['pic'] : getStaticFile('/route_detail_back.png')} />
                                 </a>
                             )
@@ -164,6 +164,7 @@ const Bourn = ({ initData, initTotal, initBanner }) => {
                     }
                     .Carousel-img{
                         height:495px;
+                        width:100%;
                     }
                     `}</style>
             </div>
